@@ -1,11 +1,15 @@
-from ramsim import Parser, ParserException
+from ramsim import Parser, ParserException, Runner
 from pprint import pprint
+from sys import argv
 
 if __name__ == "__main__":
-    p = Parser("test.ram")
+    p = Parser(argv[1])
 
-    for _, line in p.get_parsed_dict()["program"].items():
-        try:
-            pprint(p.cmdparser.match_if_then_jump(line))
-        except ParserException:
-            pass
+    r = Runner(p.get_parsed_dict(), debug=True)
+
+    r.fill_input([1,2])
+ 
+    val = r.execute_program()
+ 
+    print("====DONE====")
+    print(val)

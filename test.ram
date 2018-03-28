@@ -3,6 +3,4 @@ OUTPUT 2
   0: a <- s[0]
   1: a <- a + s[1]
   2: s[2] <- a
-  19:   if s[1] <= 0 then jump 5
-  3: jump 1
-  4: HALT
+  3: HALT

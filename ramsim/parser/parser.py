@@ -5,8 +5,8 @@ from . import ParserException, CmdParser
 
 class Parser(object):
 
-    parse_inout_line_regex = r"[\s]*(INPUT|OUTPUT)[\s]+([\d]+)(\.\.([\d]+)[\s]*){0,1}"
-    parse_program_line_regex = r"[\s]*([\d]+)[\s]*:[\s]*(.*)"
+    parse_inout_line_regex = r"\s*(INPUT|OUTPUT)\s+(\d+)(\.\.(\d+)\s*){0,1}"
+    parse_program_line_regex = r"\s*(\d+)\s*:\s*(.*)\s*"
 
 
     def __init__(self, filename: str) -> None:
@@ -37,13 +37,21 @@ class Parser(object):
         self.inout_dict = {
                 "input": {
                     "from": int(input_storage_matcher.group(2)),
-                    "to":   -1#int(input_storage_matcher.group(4))
                 },
                 "output": {
                     "from": int(output_storage_matcher.group(2)),
-                    "to":   -1#int(output_storage_matcher.group(4))
                 }
             }
+
+        if input_storage_matcher.group(4):
+            self.inout_dict["input"]["to"] = int(input_storage_matcher.group(4))
+        else:
+            self.inout_dict["input"]["to"] = None
+
+        if output_storage_matcher.group(4):
+            self.inout_dict["output"]["to"] = int(output_storage_matcher.group(4))
+        else:
+            self.inout_dict["output"]["to"] = None
         
 
     def parse_program_dict(self, line: str) -> None:
@@ -55,9 +63,8 @@ class Parser(object):
         if not matched:
             raise ParserException("Misformated line, check reference")
         
-        self.program_dict[int(matched.group(1))] = matched.group(2).replace(r"\s", "")
+        self.program_dict[int(matched.group(1))] = self.cmdparser.parse(matched.group(2))
 
-        #self.program_dict[int(matched.group(1))] = re.sub("[\s]*", "", matched.group(2))
 
     
     def parse_file(self) -> None:
