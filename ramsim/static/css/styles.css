@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: grid;
+    grid-template-rows: 80px auto;
+    grid-template-areas: "header" "main";
+    background-color: #016D77;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+}
+
+header {
+    grid-area: header;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header>a {
+    font-family: 'Squada One', cursive;
+    font-size: 40pt;
+    color: inherit;
+    text-decoration: none;
+}
+
+header>a:hover {
+    text-decoration: underline;
+}
+
+main {
+    grid-area: main;
+}
+
+.github-corner {
+    fill: #fff;
+    color: #016D77;
+    position: absolute;
+    top: 0;
+    border: 0;
+    right: 0;
+    transition: ease 0.3s;
+}
+
+.github-corner:hover {
+    fill: #01CBDE;
+}
+
+.github-corner:active {
+    fill: #EE0087;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #fff;
+    color: #016D77;
+    text-decoration: none;
+    outline-style: none;
+    box-sizing: border-box;
+    border-style: none;
+    font: inherit;
+}
+
+.btn:hover {
+    background: #01CBDE;
+    color: #fff;
+}
+
+.btn:active {
+    background: #EE0087;
+    color: #fff;
+}
+
+.btn-lg {
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 24px;
+    font-weight: 700;
+}

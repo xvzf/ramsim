@@ -28,7 +28,7 @@ class Runner(object):
         self.parsed_dict = parsed_dict
         self.program = self.parsed_dict["program"]
         self.debug = debug
-        self.timeout=3
+        self.timeout=timeout
     
 
     def debug_print(self, function_name=""):

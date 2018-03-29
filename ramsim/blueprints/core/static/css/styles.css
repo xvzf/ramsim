@@ -1,0 +1,100 @@
+.main-container {
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-areas: "main_left main_right" "submit submit";
+    margin: 20px;
+}
+
+.main-container__left, .main-container__right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: center;
+    border-color: #fff;
+    border-width: 1px !important;
+}
+
+.main-container__left {
+    grid-area: main_left;
+    border-right: solid;
+}
+
+#code {
+    font-family: 'Inconsolata', monospace;
+    font-weight: 700;
+    font-size: 16px;
+    background: inherit;
+    color: inherit; border-style: solid;
+    border-width: 2px;
+    border-color: #fff;
+    flex: 1;
+    height: auto;
+    padding: 10px;
+    margin: 20px 30px;
+}
+
+.main-container__right {
+    grid-area: main_right;
+    border-left: solid;
+}
+
+#initial_vars {
+    margin: 20px 30px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+#initial_vars > div {
+    margin: 10px 10px;
+}
+
+#initial_vars input {
+    width: 150px;
+    height: 40px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin-left: 20px;
+    border: #fff solid 2px;
+    border-radius: 20px;
+    background: inherit;
+    color: inherit;
+    font: inherit;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#initial_vars label {
+    height: 40px;
+    text-align: center;
+    font: inherit;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 16px;
+}
+
+#initial_vars div {
+    transition: all 0.5s;
+}
+
+.main-container__right--btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    padding: 5px;
+    margin: 10px;
+}
+
+.main-container__submit {
+    grid-area: submit;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+#runcode {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+}

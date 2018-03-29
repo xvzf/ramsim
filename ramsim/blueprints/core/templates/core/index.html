@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="main-container">
+    <div class="main-container__left">
+        <h3>Enter your code below</h3>
+        <textarea id="code" spellcheck="false"></textarea>
+    </div>
+
+    <div class="main-container__right">
+        <h3>Fill in initial <em>s[i]</em></h3>
+        <form id="initial_vars">
+            <!-- Filled by JS -->
+        </form>
+        <div>
+            <button class="btn main-container__right--btn" id="addInitialVar">
+                <i class="fas fa-plus"></i>
+            </button>
+
+            <button class="btn main-container__right--btn" id="removeInitialVar">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="main-container__submit">
+        <button class="btn btn-lg" id="runcode"><i class="fas fa-play"></i></button>
+    </div>
+</div>
+{% endblock main %}
+
+{% block scriptblock %}
+<script src="{{ url_for('.static', filename='js/index_main.js') }}"></script>
+{% endblock scriptblock %}
