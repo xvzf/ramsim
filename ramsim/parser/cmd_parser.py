@@ -11,7 +11,7 @@ class CmdParser(object):
 
     # matches "if _ .. 0 then jump _"
     if_then_jump_regex = \
-        r"^if\s*(i0|i1|a|s\[\d+\])\s*(<|<=|>=|>|==|!=)\s*0\s*then\s*jump\s*(\d+)$"
+        r"^if\s*(i0|i1|a|s\[\d+\])\s*(<|<=|>=|>|={1,2}|!=)\s*0\s*then\s*jump\s*(\d+)$"
 
     # matches "_ <- _ .. _"
     arithmetic_regex = \

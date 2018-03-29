@@ -1,6 +1,6 @@
 from pprint import pprint
-from .assertions import assert_true
 from . import RunnerException
+from .assertions import assert_true
 from ..parser.var_parser import VarParser
 
 
@@ -10,12 +10,14 @@ class Runner(object):
         "s":    {},
         "a":    0,
         "i0":   0,
-        "i1":   0
+        "i1":   0,
+        "line": 0
     }
 
 
     initialized = False
     executed = False
+    exec_table = []
 
     
     def __init__(self, parsed_dict, debug=False):
@@ -28,9 +30,59 @@ class Runner(object):
     
 
     def debug_print(self, function_name=""):
+        """
+        Just for debugging
+        """
         if self.debug:
             print(f"Runner.{function_name}:")
             pprint(self.state)
+    
+
+    def add_to_exec_table(self):
+        """
+        Adds the current line & state to the execution table
+        """
+
+        # Create new dict otherwise just the reference gets stored
+
+        toappend = self.state.copy()
+        toappend["s"] = toappend["s"].copy()
+        self.exec_table.append(toappend)
+
+    
+    def get_exec_table(self):
+        """
+        Returns the execution table
+        """
+        return self.exec_table
+    
+
+    def export_exec_table(self, filename):
+        """
+        Exports the execution table to a csv file
+        """
+        def write_csv_row(f, towrite):
+            f.write(
+                ",".join(
+                    map(
+                        lambda x: f"\"{x}\"",
+                        towrite
+                    )
+                ) + "\r\n"
+            )
+
+        try:
+
+            with open(filename, "w") as f:
+                write_csv_row(f, self.state.keys())
+
+                for s in self.exec_table:
+                    write_csv_row(f, s.values())
+        
+        except IOError:
+
+            raise RunnerException("Could not export to csv")
+
 
     
     def fill_input(self, input_array):
@@ -94,6 +146,7 @@ class Runner(object):
         Executes one line at a time, calls recursive
         """
         toexec = self.program[currpos]
+        self.state["line"] = currpos
 
         try:
             # End of program
@@ -138,7 +191,9 @@ class Runner(object):
             raise RunnerException(f"Line {currpos}: Invalid") 
         
         # Debug output
+        self.add_to_exec_table()
         self.debug_print("execute")
+
         # execute next instruction
         return self.execute( currpos + 1 )
     

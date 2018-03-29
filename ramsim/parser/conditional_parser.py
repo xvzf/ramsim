@@ -12,7 +12,7 @@ class ConditionalParser(object):
             return less_than_zero
         elif operator == "<=":
             return less_or_equal_zero
-        elif operator == "==":
+        elif operator == "==" or operator == "=":
             return equal_zero
         elif operator == ">=":
             return greater_or_equal_zero
