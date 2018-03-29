@@ -1,4 +1,5 @@
 from pprint import pprint
+from time import time
 from . import RunnerException
 from .assertions import assert_true
 from ..parser.var_parser import VarParser
@@ -20,13 +21,14 @@ class Runner(object):
     exec_table = []
 
     
-    def __init__(self, parsed_dict, debug=False):
+    def __init__(self, parsed_dict, debug=False, timeout=3):
         """
         Initialize
         """
         self.parsed_dict = parsed_dict
         self.program = self.parsed_dict["program"]
         self.debug = debug
+        self.timeout=3
     
 
     def debug_print(self, function_name=""):
@@ -126,6 +128,7 @@ class Runner(object):
         e = self.parsed_dict["header"]["output"]["to"]
 
         if not self.executed:
+            self.starttime = time()
             self.execute()
             self.executed = True
 
@@ -141,61 +144,68 @@ class Runner(object):
 
 
 
-    def execute(self,currpos=0):
+    def execute(self):
         """
-        Executes one line at a time, calls recursive
+        Execution loop, returns when finished
+        throws an Exception when the execution time is exceeded
         """
-        toexec = self.program[currpos]
-        self.state["line"] = currpos
+        currpos = 0 # Start at line 0
 
-        try:
-            # End of program
-            if toexec["type"] == "halt":
-                return
-            
-            # Execute jump
-            elif toexec["type"] == "jump":
-                return self.execute( int(toexec["jumpto"]) )
+        while True:
+            if time() - self.starttime > self.timeout:
+                raise RunnerException("Execution took to long, aborting")
 
-            # Execute assign
-            elif toexec["type"] == "assign":
-                self.eval_assign(toexec["target"], toexec["value"])
-            
-            # Execute Arithmetic
-            elif toexec["type"] == "arithmetic":
-                self.eval_assign(toexec["target"],
-                                 self.eval_arithmetic(
-                                     toexec["operator"],
-                                     toexec["left"],
-                                     toexec["right"]
-                                 ))
-            
-            # Execute conditional jump
-            elif toexec["type"] == "ifthenjump":
-                if self.eval_ifthenjump(
-                        toexec["comparator"],
-                        toexec["left"]):
+            toexec = self.program[currpos]
+            self.state["line"] = currpos
 
-                    return self.execute(int(toexec["jumpto"]))
+            try:
+                # End of program
+                if toexec["type"] == "halt":
+                    break
+                
+                # Execute jump
+                elif toexec["type"] == "jump":
+                    currpos = int(toexec["jumpto"])
 
+                # Execute assign
+                elif toexec["type"] == "assign":
+                    self.eval_assign(toexec["target"], toexec["value"])
+                
+                # Execute Arithmetic
+                elif toexec["type"] == "arithmetic":
+                    self.eval_assign(toexec["target"],
+                                    self.eval_arithmetic(
+                                        toexec["operator"],
+                                        toexec["left"],
+                                        toexec["right"]
+                                    ))
+                
+                # Execute conditional jump
+                elif toexec["type"] == "ifthenjump":
+                    if self.eval_ifthenjump(
+                            toexec["comparator"],
+                            toexec["left"]):
+
+                        currpos = int(toexec["jumpto"])
+
+                    else:
+                        pass
+                
                 else:
-                    pass
+                    raise RunnerException(f"Line {currpos}: Invalid")
             
-            else:
+            except ValueError:
                 raise RunnerException(f"Line {currpos}: Invalid")
-        
-        except ValueError:
-            raise RunnerException(f"Line {currpos}: Invalid")
-        
-        except KeyError:
-            raise RunnerException(f"Line {currpos}: Invalid") 
-        
-        # Debug output
-        self.add_to_exec_table()
-        self.debug_print("execute")
+            
+            except KeyError:
+                raise RunnerException(f"Line {currpos}: Invalid") 
+            
+            # Debug output
+            self.add_to_exec_table()
+            self.debug_print("execute")
 
-        # execute next instruction
-        return self.execute( currpos + 1 )
+            # execute next instruction
+            currpos = currpos + 1 
     
 
     ##### Eval #####

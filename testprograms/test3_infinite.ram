@@ -1,0 +1,7 @@
+INPUT 0..1
+OUTPUT 2
+  0: a <- s[0]
+  1: a <- a + s[1]
+  2: s[2] <- a
+  3: jump 0
+  4: HALT
