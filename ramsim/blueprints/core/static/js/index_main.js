@@ -49,9 +49,19 @@ document.getElementById("removeInitialVar").addEventListener("click", function()
 
 // Event listener for execution
 document.getElementById("runcode").addEventListener("click", function() {
-    for(b in document.getElementsByClassName("btn")) {
-        // @TODO
-    }
+
+    // Disable Inputs
+    ["addInitialVar", "removeInitialVar", "code", "runcode"].forEach(function(todisable) {
+        document.getElementById(todisable).disabled = true;
+    });
+
+    /*
+    document.getElementsByTagName("input").forEach(function (element) {
+        element.disabled = true;
+    });
+    */
+
+    //document.getElementById("addInitialVar").disabled = true;
     document.getElementById("runcode").innerHTML = '<i class="fa fa-spinner fa-spin"></i>'
 
     // @TODO
