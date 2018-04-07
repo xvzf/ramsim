@@ -33,6 +33,10 @@
     }
 }
 
+h3 {
+    margin: 30px 10px;
+}
+
 #code {
     font-family: 'Inconsolata', monospace;
     font-weight: 700;
@@ -61,7 +65,14 @@
 #initial_vars {
     margin: 20px 30px;
     display: flex;
+}
+
+.column-reverse-flex {
     flex-direction: column-reverse;
+}
+
+.column-flex {
+    flex-direction: column;
 }
 
 #initial_vars>div {
@@ -117,4 +128,47 @@
     width: 60px;
     height: 60px;
     border-radius: 30px;
+}
+
+.error-msg {
+    color: #ff7700;
+    font: inherit;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+table, td, th {
+    border: 1px solid #fff;
+    text-align: center;
+}
+
+th {
+    border-bottom: 2px solid #fff;
+}
+
+table {
+    border-collapse: collapse;
+    width: auto;
+    margin: 20px 30px;
+    box-sizing: border-box;
+}
+
+td, th {
+    width: 1%;
+    padding: 15px;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.errorpage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.errorpage > h {
+    font:inherit;
+    font-size: 30px;
+    margin: 30px 30px;
 }

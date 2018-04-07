@@ -4,7 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 from .util.framework.blueprint import register_blueprint
 from .util.config.routing import register_initial_redirect
 
+
 db = SQLAlchemy()
+
 
 def get_blueprints():
     blueprints = [

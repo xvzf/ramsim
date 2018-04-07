@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block main %}
+<div class="main-container">
+    <div class="main-container__left">
+        <div>
+            <h3>Execution result</h3>
+            {%if error %}
+                <p class="error-msg">{{errors}}</p>
+            {%else%}
+                <table class="result-table">
+                    <tr>
+                        <th>Storage Position</th>
+                        <th>Value</th>
+                    </tr>
+                    {% for var in result %}
+                    <tr>
+                        <td>s[{{ loop.index -1 + svars|length }}]</td>
+                        <td>{{var}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}
+        </div>
+        <h3>Code</h3>
+        <textarea id="code" spellcheck="false" disabled="true">{{ code }}</textarea>
+    </div>
+
+    <div class="main-container__right">
+        <h3>Initial vars</h3>
+        <form class="column-flex" id="initial_vars">
+        {% for svar in svars %}
+            <div><label>s[{{loop.index - 1}}]</label><input value="{{svar}}" disabled="true"></div>
+        {% endfor %}
+        </form>
+        {% if not error %}
+            <h3>Execution table</h3>
+            {% if exectable|length > 20 %}
+                <p>Execution table too large to display. Download <a href="{{csvurl}}">CSV</a></p>
+            {% else %}
+                <table class="exec-table">
+                    <tr>
+                        <th>#</th>
+                        <th>Position</th>
+                        <th>a</th>
+                        <th>i0</th>
+                        <th>i1</th>
+                        <th>s</th>
+                    </tr>
+                    {% for state in exectable %}
+                        <tr>
+                            <td>{{loop.index - 1}}</td>
+                            <td>{{state[4]}}</td>
+                            <td>{{state[1]}}</td>
+                            <td>{{state[2]}}</td>
+                            <td>{{state[3]}}</td>
+                            <td>{{state[0]}}</td>
+                        </tr>
+                    {% endfor %}
+                    </table>
+                {% endif %}
+        {% endif %}
+    </div>
+
+</div>
+{% endblock main %}
+
+{% block scriptblock %}
+<script src="{{ url_for('.static', filename='js/uuid_main.js') }}"></script>
+{% endblock scriptblock %}

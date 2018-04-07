@@ -9,7 +9,7 @@
 
     <div class="main-container__right">
         <h3>Fill in initial <em>s[i]</em></h3>
-        <form id="initial_vars">
+        <form class="column-reverse-flex" id="initial_vars">
             <!-- Filled by JS -->
         </form>
         <div>
@@ -27,6 +27,7 @@
         <button class="btn btn-lg" id="runcode"><i class="fas fa-play"></i></button>
     </div>
 </div>
+{{ form.csrf_token }}
 {% endblock main %}
 
 {% block scriptblock %}

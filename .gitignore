@@ -2,5 +2,7 @@
 *.pyc
 *.swp
 *.sqlite*
+*.ramsim
+*.csv
 *venv/
 .vscode/

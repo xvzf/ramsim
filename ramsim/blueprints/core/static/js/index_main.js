@@ -4,7 +4,7 @@ OUTPUT 2
   0: a <- s[0]
   1: a <- a + s[1]
   2: s[2] <- a
-  4: HALT`
+  3: HALT`
 
 
 // Rezizes 
@@ -18,7 +18,7 @@ var initialVarCount = 0
 
 var addInitialVar = function() {
     document.getElementById("initial_vars").innerHTML = "<div><label>s[" + initialVarCount + "]</label>" +
-                                                        "<input name=\"" + initialVarCount + "\"></div>\n" +
+                                                        "<input id=\"s" + initialVarCount + "\"></div>\n" +
                                                         document.getElementById("initial_vars").innerHTML;
     initialVarCount++;
 }
@@ -29,6 +29,43 @@ var removeInitialVar = function() {
         document.getElementById("initial_vars").innerHTML = document.getElementById("initial_vars").innerHTML.replace(/[\w\W]+?\n+?/,"");
         initialVarCount--;
     }
+}
+
+// Posting
+function post(path, params) {
+    method = "post"; // Set method to post by default if not specified.
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+
+
+    form.setAttribute("method", method);
+    form.setAttribute("action", path);
+
+    // csrf token for wtf flask
+    var token = document.getElementById("csrf_token").value;
+    var csrfField = document.createElement("input")
+    csrfField.setAttribute("type", "hidden");
+    csrfField.setAttribute("name", "csrf_token");
+    csrfField.setAttribute("value", token);
+    form.appendChild(csrfField);
+
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+        }
+    }
+
+
+    document.body.appendChild(form);
+    form.submit();
 }
 
 
@@ -50,21 +87,46 @@ document.getElementById("removeInitialVar").addEventListener("click", function()
 // Event listener for execution
 document.getElementById("runcode").addEventListener("click", function() {
 
-    // Disable Inputs
-    ["addInitialVar", "removeInitialVar", "code", "runcode"].forEach(function(todisable) {
-        document.getElementById(todisable).disabled = true;
-    });
+    var re = RegExp('^\\d+$');
+    var valid = true;
+    for(i = 0; i < initialVarCount; i++) {
+        if(!re.test(document.getElementById("s" + i).value)) {
+            // Invalid input, highlight
+            document.getElementById("s" + i).style.borderColor = "#FF4C00";
+            document.getElementById("s" + i).style.borderWidth = "4px";
+            valid = false;
+        }
+    }
 
-    /*
-    document.getElementsByTagName("input").forEach(function (element) {
-        element.disabled = true;
-    });
-    */
 
-    //document.getElementById("addInitialVar").disabled = true;
-    document.getElementById("runcode").innerHTML = '<i class="fa fa-spinner fa-spin"></i>'
+    // Only submit when valid
+    if(valid) {
+        // Disable Inputs
+        ["addInitialVar", "removeInitialVar", "code", "runcode"].forEach(function(todisable) {
+            document.getElementById(todisable).disabled = true;
+        });
 
-    // @TODO
+        inputs = document.getElementsByTagName("input");
+        for(i = 0; i < inputs.length; i++) {
+            inputs[i].disabled = true;
+        }
+
+        //document.getElementById("addInitialVar").disabled = true;
+        document.getElementById("runcode").innerHTML = '<i class="fa fa-spinner fa-spin"></i>';
+
+        var svars = ""
+        // Collect all svars
+        for(i = 0; i < (initialVarCount - 1); i++) {
+            svars = svars + document.getElementById("s" + i).value + ";";
+        }
+        svars = svars + document.getElementById("s" + (initialVarCount - 1)).value;
+
+        // Create post request
+        post("/core/", {
+            "code": document.getElementById("code").value,
+            "svar": svars
+        });
+    }
 });
 
 
@@ -73,8 +135,8 @@ document.addEventListener("load", new function() {
 
     // initialize code input
     document.getElementById("code").value = exampleCode;
-    rezizeCodeInput()
+    rezizeCodeInput();
 
     // initialize initial variables
-    addInitialVar()
+    addInitialVar();
 });

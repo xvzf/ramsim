@@ -1,6 +1,9 @@
 from . import RunnerException
 
 
-def assert_true(pline: int ,value: bool):
+def assert_true(pline: int, value: bool, msg=None):
     if not value:
-        raise RunnerException(f"Runtime Error on line {pline}, check your code")
+        if not msg:
+            raise RunnerException(f"Runtime Error on line {pline}, check your code")
+        else:
+            raise RunnerException(f"Runtime Error in Line{pline}, {msg}")

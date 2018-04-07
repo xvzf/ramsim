@@ -62,6 +62,7 @@ main {
     box-sizing: border-box;
     border-style: none;
     font: inherit;
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -74,11 +75,28 @@ main {
     color: #fff;
 }
 
+.btn:focus {
+    outline: none;
+}
+
 .btn-lg {
     padding: 10px 20px;
     border-radius: 25px;
-    cursor: pointer;
     transition: all 0.2s;
     font-size: 24px;
     font-weight: 700;
+}
+
+p a {
+    font: inherit;
+    color: #fff;
+    text-align: center;
+}
+
+a {
+    cursor: pointer;
+}
+
+a:hover, a:active {
+    color: #01CBDE;
 }

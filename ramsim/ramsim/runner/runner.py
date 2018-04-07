@@ -7,18 +7,19 @@ from ..parser.var_parser import VarParser
 
 class Runner(object):
 
-    state = {
-        "s":    {},
-        "a":    0,
-        "i0":   0,
-        "i1":   0,
-        "line": 0
-    }
-
-
-    initialized = False
-    executed = False
-    exec_table = []
+# @WTF @TODO
+#   state = {
+#       "s":    {},
+#       "a":    0,
+#       "i0":   0,
+#       "i1":   0,
+#       "line": 0
+#   }
+#
+#
+#   initialized = False
+#   executed = False
+#   exec_table = []
 
     
     def __init__(self, parsed_dict, debug=False, timeout=3):
@@ -29,6 +30,19 @@ class Runner(object):
         self.program = self.parsed_dict["program"]
         self.debug = debug
         self.timeout=timeout
+
+        # For whatever reason this is not cleared after the object is destroyed?!
+        # @TODO
+        self.exec_table = []
+        self.initialized = False
+        self.executed = False
+        self.state = {
+            "s":    {},
+            "a":    0,
+            "i0":   0,
+            "i1":   0,
+            "line": 0
+        }
     
 
     def debug_print(self, function_name=""):
@@ -65,7 +79,7 @@ class Runner(object):
         """
         def write_csv_row(f, towrite):
             f.write(
-                ",".join(
+                ";".join(
                     map(
                         lambda x: f"\"{x}\"",
                         towrite
@@ -98,7 +112,7 @@ class Runner(object):
         if e:
             # Check correct input length
             calculated_input_length = e - a + 1
-            assert_true(0, len(input_array) == calculated_input_length)
+            assert_true(0, len(input_array) == calculated_input_length, msg="invalid variable initialization")
 
             for i in range(calculated_input_length):
                 self.state["s"][i + a] = input_array[i]
@@ -155,10 +169,10 @@ class Runner(object):
             if time() - self.starttime > self.timeout:
                 raise RunnerException("Execution took to long, aborting")
 
-            toexec = self.program[currpos]
-            self.state["line"] = currpos
-
             try:
+                toexec = self.program[currpos]
+                self.state["line"] = currpos
+
                 # End of program
                 if toexec["type"] == "halt":
                     break
@@ -166,6 +180,7 @@ class Runner(object):
                 # Execute jump
                 elif toexec["type"] == "jump":
                     currpos = int(toexec["jumpto"])
+                    continue
 
                 # Execute assign
                 elif toexec["type"] == "assign":
@@ -187,6 +202,7 @@ class Runner(object):
                             toexec["left"]):
 
                         currpos = int(toexec["jumpto"])
+                        continue
 
                     else:
                         pass
@@ -212,7 +228,7 @@ class Runner(object):
 
     def eval_assign(self, key, value):
         """
-        Assigns a value either out of memory or fiexed to a storage position
+        Assigns a value either out of memory or fixed to a storage position
         """
 
         if VarParser().is_svar(key):
