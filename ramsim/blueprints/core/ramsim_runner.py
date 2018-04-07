@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: ramsim_runner.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 from ... import db
 from ...models import CodeExec
 from ...ramsim import Runner, Parser, ParserException, RunnerException

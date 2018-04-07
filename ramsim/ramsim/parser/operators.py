@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: operators.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 
 
 # Arithmetic operations

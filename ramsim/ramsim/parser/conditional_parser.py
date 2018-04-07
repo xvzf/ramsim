@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: conditional_parser.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 from types import FunctionType
 from .operators import greater_or_equal_zero, greater_zero, equal_zero, less_or_equal_zero, less_than_zero
 from . import ParserException

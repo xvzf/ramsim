@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: arithmetic_parser.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 from types import FunctionType
 from .operators import add, substract, multiply, divide, modulo
 from . import ParserException

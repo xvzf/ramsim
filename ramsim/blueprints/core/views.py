@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: views.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 from flask import render_template, url_for, redirect, request, abort
 
 from . import blueprint

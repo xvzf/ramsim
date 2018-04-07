@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: blueprint.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 from importlib import import_module
 from flask import Blueprint, Flask
 

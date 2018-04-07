@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: cmd_parser.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 import re
 from . import ParserException
 from . import ArithmeticParser, ConditionalParser

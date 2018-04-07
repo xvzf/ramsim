@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: parser.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 import re
 from fileinput import FileInput
 from . import ParserException, CmdParser

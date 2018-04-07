@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: run.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 from ramsim import create_app, db
 from os import urandom
 from importlib import import_module

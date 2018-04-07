@@ -1,3 +1,15 @@
+#!/bin/env python3
+#
+#                       RAMSIM
+#
+#
+#   Author:   Matthias Riegler <matthias@xvzf.tech>
+#   Filename: development.py
+#
+#   License:  GPLv3, see LICENSE.md
+#
+#
+
 import os
 
 INITIAL_REDIRECT = "/core"
