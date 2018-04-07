@@ -28,9 +28,6 @@ def process(uuid):
 
     if not uuid_dict:
         return abort(404)
-
-    print(len(uuid_dict["exectable"]))
-    print(uuid_dict["exectable"])
     
     return render_template("core/uuid.html", svars=uuid_dict["svars"],   code=uuid_dict["code"],
                                              result=uuid_dict["result"], error=uuid_dict["error"],
