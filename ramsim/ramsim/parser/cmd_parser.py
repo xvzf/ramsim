@@ -25,9 +25,13 @@ class CmdParser(object):
     if_then_jump_regex = \
         r"^if\s*(i0|i1|a|s\[\d+\])\s*(<|<=|>=|>|={1,2}|!=)\s*0\s*then\s*jump\s*(\d+)$"
 
-    # matches "_ <- _ .. _"
+    # matches "a <- _ .. _"
     arithmetic_regex = \
         r"^(a|i0|i1)\s*<-\s*(s[\d+]|a|i0|i1|\d+)\s*(\+|-|\*|mod|div)\s*(\d+|a|s\[\d+\])$"
+
+    # Index registered are limited to +/- 1
+    arithmetic_index_regex = \
+        r"^(i0|i1)\s*<-\s*(i0|i1)\s*(\+|-)\s*(0|1)$"
 
     # matches "_ <- _"
     value_assign_regex = \
@@ -39,18 +43,19 @@ class CmdParser(object):
 
 
     # determines the order of parsing operations
-    matcher = ["regular_jump", "value_assign", "arithmetic", "if_then_jump", "halt"]
+    matcher = ["regular_jump", "value_assign", "arithmetic", "arithmetic_regex", "if_then_jump", "halt"]
 
 
     def __init__(self):
         """
         Initializes the class and all matcher
         """
-        self.regular_jump = re.compile(self.regular_jump_regex)
-        self.if_then =      re.compile(self.if_then_jump_regex)
-        self.arithmetic =   re.compile(self.arithmetic_regex)
-        self.value =        re.compile(self.value_assign_regex)
-        self.halt =         re.compile(self.halt_regex)
+        self.regular_jump =     re.compile(self.regular_jump_regex)
+        self.if_then =          re.compile(self.if_then_jump_regex)
+        self.arithmetic =       re.compile(self.arithmetic_regex)
+        self.arithmetic_index = re.compile(self.arithmetic_index_regex)
+        self.value =            re.compile(self.value_assign_regex)
+        self.halt =             re.compile(self.halt_regex)
 
         # Subparser
         self.cond_parser =  ConditionalParser()
@@ -114,6 +119,25 @@ class CmdParser(object):
 
         if not matched:
             raise ParserException("Not an arithmetic expression")
+        
+        return {
+                "type":     "arithmetic",
+                "target":   matched.group(1),
+                "left":     matched.group(2),
+                "operator": self.arith_parser.parse(matched.group(3)),
+                "right":    matched.group(4)
+                }
+
+
+    def match_arithmetic_index(self, line: str) -> dict:
+        """
+        Tries to match a line to an "a <- a _ b" statement
+        throws a ParserException if not possible
+        """
+        matched = self.arithmetic_index.match(line)
+
+        if not matched:
+            raise ParserException("Arithmetic operations to the index registers are limited to +/- 1!")
         
         return {
                 "type":     "arithmetic",
